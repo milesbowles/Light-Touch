@@ -18,29 +18,43 @@ void setup() {
 void loop() {
   uint8_t  i;
   uint32_t t;
+
+
+  // bluetoothSync(20);
+  // delay(50);
  
   switch(mode) {
-    
+
    case 0: //rainbow hold
-    rainbowHold(20);
-    delay(500);
+    setWhite(20);
+    delay(50);
+    break;
+
+   case 1: //rainbow hold
+    setBlue(20);
+    delay(50);
     break;
     
-   case 1: //rainbow cycle slow
-    rainbowCycleslow(20);
-    delay(50);
-    break;
+  //  case 0: //rainbow hold
+  //   rainbowHold(20);
+  //   delay(500);
+  //   break;
+    
+  //  case 1: //rainbow cycle slow
+  //   rainbowCycleslow(20);
+  //   delay(50);
+  //   break;
        
-   case 2: //rainbow cycle fast 
-    rainbowCycle(5);
-    delay(50);
-    break;
+  //  case 2: //rainbow cycle fast 
+  //   rainbowCycle(5);
+  //   delay(50);
+  //   break;
   }
  
   t = millis();
-  if((t - prevTime) > 8000) {      // Every 8 seconds...
+  if((t - prevTime) > 300) {      // Every 8 seconds...
     mode++;                        // Next mode
-    if(mode > 3) {                 // End of modes?
+    if(mode > 2) {                 // End of modes?
       mode = 0;                    // Start modes over
       color >>= 8;                 // Next color R->G->B
       if(!color) color = 0xB300A4; // Reset color
@@ -52,6 +66,51 @@ void loop() {
  
   
 }
+
+
+
+void setBlue(uint8_t wait) {
+  uint16_t j;
+  uint8_t r, g, b;
+
+  r = 0;
+  g = 0;
+  b = 255;
+
+  for(j=0; j< pixels.numPixels(); j++) {
+    if ((j % 2) == 0) {
+      pixels.setPixelColor(j, r, g, b);
+    } else {
+      pixels.setPixelColor(j, b, b, b);
+    }
+    
+  }
+  pixels.show();
+  delay(wait);
+}
+
+void setWhite(uint8_t wait) {
+  uint16_t j;
+  uint8_t r, g, b;
+
+  r = 0;
+  g = 0;
+  b = 255;
+
+  for(j=0; j< pixels.numPixels(); j++) {
+    if ((j % 2) == 0) {
+      pixels.setPixelColor(j, b, b, b);
+    } else {
+      pixels.setPixelColor(j, r, g, b);
+    }
+    
+  }
+  pixels.show();
+  delay(wait);
+}
+
+
+
 void rainbow(uint8_t wait) {
   uint16_t i, j;
  
