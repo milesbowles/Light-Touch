@@ -2,7 +2,7 @@
  
 #define PIN 1
  
-Adafruit_NeoPixel pixels = Adafruit_NeoPixel(40, PIN);
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(7, PIN);
  
 uint8_t  mode   = 0, // Current animation effect
          offset = 0;
@@ -18,37 +18,24 @@ void setup() {
 void loop() {
   uint8_t  i;
   uint32_t t;
-
-
-  // bluetoothSync(20);
-  // delay(50);
  
-  switch(mode) {
-
+  switch(2) {
+    
    case 0: //rainbow hold
-    setWhite(20);
+    rainbowHold(20);
+    delay(500);
+    break;
+    
+   case 1: //rainbow cycle slow
+    rainbowCycleslow(20);
+    delay(50);
+    break;
+       
+   case 2: //rainbow cycle fast 
+    rainbowCycle(5);
     delay(50);
     break;
 
-   case 1: //rainbow hold
-    setBlue(20);
-    delay(50);
-    break;
-    
-  //  case 0: //rainbow hold
-  //   rainbowHold(20);
-  //   delay(500);
-  //   break;
-    
-  //  case 1: //rainbow cycle slow
-  //   rainbowCycleslow(20);
-  //   delay(50);
-  //   break;
-       
-  //  case 2: //rainbow cycle fast 
-  //   rainbowCycle(5);
-  //   delay(50);
-  //   break;
   }
  
   t = millis();
@@ -60,56 +47,9 @@ void loop() {
       if(!color) color = 0xB300A4; // Reset color
     }
     for(i=0; i<32; i++) pixels.setPixelColor(i, 0);
-    prevTime = t;
-    
+    prevTime = t;  
   }
- 
-  
 }
-
-
-
-void setBlue(uint8_t wait) {
-  uint16_t j;
-  uint8_t r, g, b;
-
-  r = 0;
-  g = 0;
-  b = 255;
-
-  for(j=0; j< pixels.numPixels(); j++) {
-    if ((j % 2) == 0) {
-      pixels.setPixelColor(j, r, g, b);
-    } else {
-      pixels.setPixelColor(j, b, b, b);
-    }
-    
-  }
-  pixels.show();
-  delay(wait);
-}
-
-void setWhite(uint8_t wait) {
-  uint16_t j;
-  uint8_t r, g, b;
-
-  r = 0;
-  g = 0;
-  b = 255;
-
-  for(j=0; j< pixels.numPixels(); j++) {
-    if ((j % 2) == 0) {
-      pixels.setPixelColor(j, b, b, b);
-    } else {
-      pixels.setPixelColor(j, r, g, b);
-    }
-    
-  }
-  pixels.show();
-  delay(wait);
-}
-
-
 
 void rainbow(uint8_t wait) {
   uint16_t i, j;
@@ -134,6 +74,7 @@ void rainbowCycle(uint8_t wait) {
     delay(wait);
   }
 }
+
 void rainbowCycleslow(uint8_t wait) {
   uint16_t r, j;
  
@@ -145,6 +86,7 @@ void rainbowCycleslow(uint8_t wait) {
     delay(wait);
   }
 }
+
 void rainbowHold(uint8_t wait) {
   uint16_t r, j;
  
@@ -160,13 +102,13 @@ void rainbowHold(uint8_t wait) {
 // Input a value 0 to 255 to get a color value.
 // The colours are a transition r - g - b - back to r.
 uint32_t Wheel(byte WheelPos) {
-  if(WheelPos < 85) {
-   return pixels.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
-  } else if(WheelPos < 170) {
-   WheelPos -= 85;
-   return pixels.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  if(WheelPos < 40) {
+   return pixels.Color(255, 255, 255);
+  } else if(WheelPos < 180) {
+   WheelPos -= 90;
+   return pixels.Color(0, 0, WheelPos * 3);
   } else {
-   WheelPos -= 170;
-   return pixels.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+   WheelPos -= 65;
+   return pixels.Color(0, 0, 255 - WheelPos * 3);
   }
 }

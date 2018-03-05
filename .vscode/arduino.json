@@ -1,5 +1,5 @@
 {
     "board": "arduino:avr:uno",
-    "sketch": "main.ino",
+    "sketch": "spin.ino",
     "port": "/dev/cu.usbmodem1411"
 }
