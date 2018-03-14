@@ -11,6 +11,7 @@
 #define buttonPin 8 // Capacitive touch sensor
 #define lightPin 9 // Addressable RGB array
 
+// Define RGB pins
 int redPin = 6;
 int greenPin = 5;
 int bluePin = 3;
