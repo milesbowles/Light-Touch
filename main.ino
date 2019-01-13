@@ -72,6 +72,7 @@ void doublePressEvent()
 void holdEvent()
 {
     Serial.println("Hold");
+    colorPulseAnimation();
 }
 void longHoldEvent()
 {
@@ -208,15 +209,18 @@ void spinnerAnimation() {
     // Set rgb brightness
     pixels.setBrightness(brightness);
 
+    // Set number of rotation 
+    int rotationCount = 3;
+
     // Set animation rotation speed (ms)
     int rotationSpeed = 150;
 
-    // Set color 3 
+    // Set color 1 
     int r1 = 255;
     int g1 = 255; 
     int b1 = 255;
 
-    // Set color 3 
+    // Set color 2 
     int r2 = 100;
     int g2 = 200; 
     int b2 = 255;
@@ -226,7 +230,7 @@ void spinnerAnimation() {
     int g3 = 50; 
     int b3 = 255;
 
-    for (i = 0; i < 30; i++) 
+    for (i = 0; i < rotationCount; i++) 
     {
         // Iterate through lights
         for (n = 0; n < 3; n++)
@@ -282,13 +286,16 @@ void pulseAnimation()
     // Set pulse speed (ms)
     int pulseSpeed = 5;
 
+    // Set number of pulses 
+    int pulseCount = 3;
+
     // TODO: Add logic for pulsing with any input color
     // Set color 
     // int r = 255;
     // int g = 255; 
     // int b = 255;
 
-    for (i = 0; i < 10; i++) 
+    for (i = 0; i < pulseCount; i++) 
     {
         // Cycle from 0 brightness to full brightness and back
         for (n = 0; n < (255 * 2); n++)
@@ -303,6 +310,66 @@ void pulseAnimation()
                 pixels.setPixelColor(4, c, c, c);
                 pixels.setPixelColor(6, c, c, c);
                 pixels.setPixelColor(2, c, c, c);
+            }
+
+            // Update rgb array
+            pixels.show();
+            // Set pulse speed
+            delay(pulseSpeed);
+        }
+    }
+    
+    // Set rgb array to off when animation is finished
+    pixels.setBrightness(0);
+    pixels.show();
+
+    // Enable button
+    digitalWrite(buttonPin, HIGH);
+}
+
+// Color changing pulse animation
+void colorPulseAnimation()
+{
+    uint16_t i, n;
+
+    // Disable button
+    digitalWrite(buttonPin, LOW);
+
+    // Set rgb brightness
+    pixels.setBrightness(brightness);
+
+    // Set pulse speed (ms)
+    int pulseSpeed = 10;
+
+    // Set number of pulses 
+    int pulseCount = 1;
+
+    // TODO: Add logic for pulsing with any input color
+    // Set color 
+    // int r = 255;
+    // int g = 255; 
+    // int b = 255;
+
+    for (i = 0; i < pulseCount; i++) 
+    {
+        // Cycle from 0 brightness to full brightness and back
+        for (n = 0; n < (255 * 2); n++)
+        {
+            // Adjust brightness
+            if (n < 255) {
+                pixels.setPixelColor(4, 0, n, n);
+                pixels.setPixelColor(6, 0, n, n);
+                pixels.setPixelColor(2, 0, n, n);
+            } else {
+                int c = ((255 * 2) - n);
+                if ((c-10) > 0) {
+                    pixels.setPixelColor(4, 0, c, (c-10));
+                    pixels.setPixelColor(6, 0, c, (c-10));
+                    pixels.setPixelColor(2, 0, c, (c-10));
+                }
+                pixels.setPixelColor(4, 0, (255 / 2), c);
+                pixels.setPixelColor(6, 0, (255 / 2), c);
+                pixels.setPixelColor(2, 0, (255 / 2), c);
             }
 
             // Update rgb array
